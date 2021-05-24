@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="frutas">
+        <item>@drawable/abacaxi</item>
+        <item>@drawable/laranja</item>
+        <item>@drawable/limao</item>
+    </array>
+
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Lista de Frutas</string>
+    <string name="nome_fruta">Nome da fruta</string>
+    <string name="desc_fruta">Descrição da fruta</string>
+    <string name="img_fruta">Selecionar Imagem</string>
+    <string name="cad_fruta">Cadastro de frutas</string>
+    <string name="cads_fruta">Cadastrar</string>
+</resources>
