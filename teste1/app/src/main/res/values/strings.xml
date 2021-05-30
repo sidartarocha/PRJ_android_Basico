@@ -6,4 +6,5 @@
     <string name="cad_fruta">Cadastro de frutas</string>
     <string name="cads_fruta">Cadastrar</string>
     <string name="apagar_fruta">Apagar</string>
+    <string name="lista_vazia">Não existem frutas Cadastradas</string>
 </resources>

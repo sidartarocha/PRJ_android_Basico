@@ -8,63 +8,55 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/scrollView2"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/nomeFruta"
+            android:id="@+id/nameFruit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="92dp"
             android:text="@string/nome_fruta"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnApagarFruta" />
+            app:layout_constraintTop_toBottomOf="@+id/DetailFruitImageView" />
 
         <TextView
-            android:id="@+id/descFruta"
+            android:id="@+id/descFruit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
             android:text="@string/desc_fruta"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nomeFruta" />
+            app:layout_constraintTop_toBottomOf="@+id/nameFruit"
+            app:layout_constraintVertical_bias="0.082" />
 
         <ImageView
-            android:id="@+id/frutaImageView"
+            android:id="@+id/DetailFruitImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="84dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
         <Button
             android:id="@+id/btnApagarFruta"
-            android:text= "@string/apagar_fruta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:text="@string/apagar_fruta"
+            app:layout_constraintBottom_toTopOf="@+id/nameFruit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frutaImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/DetailFruitImageView"
+            app:layout_constraintVertical_bias="0.568" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
