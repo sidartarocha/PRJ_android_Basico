@@ -2,6 +2,7 @@ package com.example.myapplication.adapter
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemFrutaBinding
 import com.example.myapplication.model.Fruta
+import com.squareup.picasso.Picasso
 
 class FrutasAdapter(private val context: Context,
                     private val frutas: List<Fruta>,
@@ -40,7 +42,12 @@ class FrutasAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val (nome, desc,  imgfrut) = frutas[position]
-        holder.imgFruta.setImageDrawable(ifrutas.getDrawable(imgfrut))
+        if (imgfrut.length < 2){
+            holder.imgFruta.setImageDrawable(ifrutas.getDrawable(imgfrut.toInt()))
+        }else{
+            Picasso.get().load(imgfrut).into(holder.imgFruta)
+        }
+
         holder.txtNome.text = nome
         holder.txtDesc.text = desc
 

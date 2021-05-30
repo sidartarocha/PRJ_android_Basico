@@ -16,13 +16,16 @@ class MainActivity: AppCompatActivity() {
     companion object {
         const val MAIN_ACTIVITY_REQUEST_ID = 0
         const val MAIN_SAVED_INSTANCE_ID = "saved_instance"
+        const val MAIN_FRUTA_LIST = "MAIN_FRUIT_LIST"
+        const val MAIN_FRUTA_DETAIL = "MAIN_FRUTA_DETAIL"
+        const val MAIN_FRUTA_ADD = "MAIN_FRUIT_LIST"
     }
     private lateinit var binding : ActivityMainBinding
 
     private var listFrutas = mutableListOf(
-        Fruta("Abacaxi", "Fruta Doce e Acida", 0),
-        Fruta("Limao", "Fruta Citrica Azeda", 1),
-        Fruta("Laranja", "Fruta Citrica Adocicada", 2)
+        Fruta("Abacaxi", "Fruta Doce e Acida", "0"),
+        Fruta("Limao", "Fruta Citrica Azeda", "1"),
+        Fruta("Laranja", "Fruta Citrica Adocicada", "2")
     )
 
     private val mFrutasAdapter = FrutasAdapter(this, listFrutas, this::onFrutaClickListiner)
@@ -32,15 +35,13 @@ class MainActivity: AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (savedInstanceState != null) {
-            //val saved = savedInstanceState.getParcelableArrayList(MAIN_SAVED_INSTANCE_ID)
+          val  frutas = savedInstanceState.getParcelableArrayList<Fruta>(MAIN_FRUTA_LIST)?.toMutableList()?:listFrutas
         }
-
         chamaCadastro()
         setupRecylerview()
-
-
-        
    }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -48,39 +49,28 @@ class MainActivity: AppCompatActivity() {
 
             Toast.makeText(this, "Result: $requestCode = $(data?.getStringArrayExtra(MAIN_ACTIVITY_REQUEST_ID))", Toast.LENGTH_SHORT).show()
             if (MAIN_ACTIVITY_REQUEST_ID == requestCode) {
-                //val vNome = data?.getStringArrayExtra(SecondActivity.SECOND_ACTIVITY_NOME_FRUTA_ID)
-                val vNome = data?.getStringArrayExtra(SecondActivity.SECOND_ACTIVITY_NOME_FRUTA_ID)
-
-                Toast.makeText(this, "Result: ${vNome.toString()}", Toast.LENGTH_SHORT).show()
-                val vDesc = data?.getStringArrayExtra(SecondActivity.SECOND_ACTIVITY_DESC_FRUTA_ID)
-                val vimg = data?.getStringArrayExtra(SecondActivity.SECOND_ACTIVITY_IMG_FRUTA_ID)
-                if (isValid(vNome.toString()) and isValid(vDesc.toString()) and isValid(vimg.toString())){
-                    //insereRegistro(vNome.toString(),vDesc.toString(),vimg.toString())
-                    insereRegistro("morango", "fruta doce", "2")
-                    Toast.makeText(this, "Result: sc $vNome", Toast.LENGTH_SHORT).show()
+                data?.getParcelableExtra<Fruta>(MAIN_FRUTA_ADD)?.let {
+                    insereRegistro(it)
+                    Toast.makeText(this, "Fruta:  ${it.nome} adicionada", Toast.LENGTH_SHORT).show()
                 }
-
             }
         }
     }
 
-    private fun insereRegistro(vNome: String, vDesc: String, vimg: String) {
+    private fun insereRegistro(vFruta: Fruta) {
         val lastState = listFrutas[listFrutas.lastIndex]
-        listFrutas[listFrutas.lastIndex] = Fruta(vNome, vDesc, vimg.toInt())
+        listFrutas[listFrutas.lastIndex] = vFruta
         listFrutas.add(lastState)
         mFrutasAdapter.notifyItemChanged(
             listFrutas.lastIndex-1, listFrutas.lastIndex)
 
     }
 
-
-    private fun isValid(name: String): Boolean = !name.isNullOrEmpty()
-    
-
+   private fun isValid(name: String): Boolean = !name.isNullOrEmpty()
 
     private fun chamaCadastro() {
         binding.fabAdd.setOnClickListener {
-            val secondActivity = Intent(this, SecondActivity::class.java)
+            val secondActivity = Intent(this, InsertFruitActivity::class.java)
             startActivityForResult(secondActivity , MAIN_ACTIVITY_REQUEST_ID)
         }
     }
@@ -97,8 +87,12 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun onFrutaClickListiner(fruta: Fruta) {
-        Toast.makeText(this, "Fruta: ${fruta.nome}",
-            Toast.LENGTH_SHORT).show()
+        val fruitDetail = Intent(this, DetailFruitActivity::class.java)
+        fruitDetail.putExtra("MAIN_FRUTA_DETAIL", fruta)
+        startActivity(fruitDetail)
+
+        /*Toast.makeText(this, "Fruta: ${fruta.nome}",
+            Toast.LENGTH_SHORT).show()*/
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
