@@ -7,17 +7,19 @@ import android.os.Bundle
 import android.view.View.*
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.myapplication.adapter.FrutasAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.helper.NoteItemTouchHelperCallBack
 import com.example.myapplication.model.Fruta
-
+import java.text.FieldPosition
 
 
 class MainActivity: AppCompatActivity() {
     companion object {
         const val MAIN_ACTIVITY_REQUEST_ID_INSERT = 0
         const val MAIN_ACTIVITY_REQUEST_ID_REMOVE = 1
-        const val MAIN_SAVED_INSTANCE_ID = "saved_instance"
+        const val MAIN_FRUTA_POSITION = "MAIN_FRUTA_POSITION"
         const val MAIN_FRUTA_LIST = "MAIN_FRUIT_LIST"
         const val MAIN_FRUTA_DETAIL = "MAIN_FRUTA_DETAIL"
         const val MAIN_FRUTA_ADD = "MAIN_FRUIT_LIST"
@@ -27,12 +29,13 @@ class MainActivity: AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
     private var listFrutas = mutableListOf(
-        Fruta("Abacaxi", "Fruta Doce e Acida", "0"),
-        Fruta("Limao", "Fruta Citrica Azeda", "1"),
-        Fruta("Laranja", "Fruta Citrica Adocicada", "2")
+        Fruta("Abacaxi", "Fruta Doce e Acida", "", R.drawable.abacaxi),
+        Fruta("Limao", "Fruta Citrica Azeda","", R.drawable.limao),
+        Fruta("Laranja", "Fruta Citrica Adocicada", "", R.drawable.laranja)
     )
 
-    private val mFrutasAdapter = FrutasAdapter(this, listFrutas, this::onFrutaClickListiner)
+    //private val mFrutasAdapter = FrutasAdapter(this, listFrutas, this::onFrutaClickListiner)
+    private val mFrutasAdapter by lazy { FrutasAdapter(listFrutas, this::onFrutaClickListiner) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +48,10 @@ class MainActivity: AppCompatActivity() {
         setupRecylerview()
    }
     //chamada da tela de detalhes
-    private fun onFrutaClickListiner(fruta: Fruta) {
+    private fun onFrutaClickListiner(fruta: Fruta, position: Int) {
         val fruitDetail = Intent(this, DetailFruitActivity::class.java)
         fruitDetail.putExtra("MAIN_FRUTA_DETAIL", fruta)
+        fruitDetail.putExtra("MAIN_FRUTA_POSITION", position)
         startActivityForResult(fruitDetail , MAIN_ACTIVITY_REQUEST_ID_REMOVE)
     }
 
@@ -127,6 +131,9 @@ class MainActivity: AppCompatActivity() {
             }
         }
         binding.recyclerView.layoutManager = layoutManager
+
+        val itemTouchHelper = ItemTouchHelper(NoteItemTouchHelperCallBack(mFrutasAdapter))
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
 

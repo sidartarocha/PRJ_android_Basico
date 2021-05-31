@@ -52,9 +52,9 @@ class InsertFruitActivity: AppCompatActivity() {
             val name = binding.editTextNomeFruta.text.toString()
             val descf = binding.editTextDescFruta.text.toString()
             val imgf = imageURL2
-            if (isValid(name) and isValid(descf)){
+            if (isValid(name) and isValid(descf) and imageURL2.isNotEmpty()){
                 val returnIntent = Intent(this, MainActivity::class.java)
-                val futra_add = Fruta(name, descf, imgf )
+                val futra_add = Fruta(name, descf, imgf , 0)
                 returnIntent.putExtra(MAIN_FRUTA_ADD, futra_add)
                 returnIntent.putExtra(FRUIT_ACTIVITY_ACTION, "insert")
                 setResult(Activity.RESULT_OK, returnIntent )
