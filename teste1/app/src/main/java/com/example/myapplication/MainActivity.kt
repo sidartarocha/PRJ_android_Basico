@@ -34,6 +34,8 @@ class MainActivity: AppCompatActivity() {
         Fruta("Laranja", "Fruta Citrica Adocicada", "", R.drawable.laranja)
     )
 
+
+
     //private val mFrutasAdapter = FrutasAdapter(this, listFrutas, this::onFrutaClickListiner)
     private val mFrutasAdapter by lazy { FrutasAdapter(listFrutas, this::onFrutaClickListiner) }
 
@@ -57,7 +59,7 @@ class MainActivity: AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-       outState.putParcelableArrayList(MAIN_FRUTA_LIST, ArrayList(listFrutas))
+        outState.putParcelableArrayList(MAIN_FRUTA_LIST, ArrayList(listFrutas))
         //putAll(listFrutas)
 
     }
@@ -118,6 +120,7 @@ class MainActivity: AppCompatActivity() {
     private fun chamaCadastro() {
         binding.fabAdd.setOnClickListener {
             val secondActivity = Intent(this, InsertFruitActivity::class.java)
+            secondActivity.putExtra(MAIN_FRUTA_LIST, ArrayList(listFrutas))
             startActivityForResult(secondActivity , MAIN_ACTIVITY_REQUEST_ID_INSERT)
         }
     }

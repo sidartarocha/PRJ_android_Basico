@@ -7,4 +7,12 @@
     <string name="cads_fruta">Cadastrar</string>
     <string name="apagar_fruta">Apagar</string>
     <string name="lista_vazia">Não existem frutas Cadastradas</string>
+    <string name="remover_fruta_msg">Deseja Remover Fruta</string>
+    <string name="remover_fruta_alert">Remover Fruta?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="atention">Atenção</string>
+    <string name="fruit_registered">Existe uma fruta com esse nome ja cadastrada.</string>
+    <string name="ok">Ok</string>
+
 </resources>
