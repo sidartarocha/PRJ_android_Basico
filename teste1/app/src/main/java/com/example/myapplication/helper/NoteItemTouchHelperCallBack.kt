@@ -1,5 +1,6 @@
 package com.example.myapplication.helper
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -7,9 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.adapter.FrutasAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.callback.FrutaRecyclerViewCallback
 
 
-class NoteItemTouchHelperCallBack(private val frutasAdapter: FrutasAdapter) : ItemTouchHelper.Callback(){
+class NoteItemTouchHelperCallBack(val context: Context,
+                                  private val callBack: FrutaRecyclerViewCallback) :
+    ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN ,
+                                            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ){
+
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -24,14 +31,13 @@ class NoteItemTouchHelperCallBack(private val frutasAdapter: FrutasAdapter) : It
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        val initPosition = viewHolder.adapterPosition
-        val targetPosition = target.adapterPosition
-        frutasAdapter.swap(initPosition,targetPosition)
+        callBack.onMoved(viewHolder.adapterPosition, target.adapterPosition)
+        //frutasAdapter.swap(initPosition , targetPosition)
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
+        //val position = viewHolder.adapterPosition
         /*val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.remover_fruta_alert)
         builder.setMessage(R.string.remover_fruta_msg)
@@ -44,7 +50,8 @@ class NoteItemTouchHelperCallBack(private val frutasAdapter: FrutasAdapter) : It
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()*/
-        frutasAdapter.remove(position)
+        //frutasAdapter.remove(position)
+        callBack.onSwipe(viewHolder.adapterPosition, viewHolder)
     }
 
 

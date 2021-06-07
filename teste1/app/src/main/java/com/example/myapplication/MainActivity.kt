@@ -6,13 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.*
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.FrutasAdapter
+import com.example.myapplication.callback.FrutaRecyclerViewCallback
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.helper.NoteItemTouchHelperCallBack
 import com.example.myapplication.model.Fruta
-import java.text.FieldPosition
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity: AppCompatActivity() {
@@ -29,9 +33,9 @@ class MainActivity: AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
     private var listFrutas = mutableListOf(
-        Fruta("Abacaxi", "Fruta Doce e Acida", "", R.drawable.abacaxi),
-        Fruta("Limao", "Fruta Citrica Azeda","", R.drawable.limao),
-        Fruta("Laranja", "Fruta Citrica Adocicada", "", R.drawable.laranja)
+        Fruta("Abacaxi", "Fruta Doce e Acida", "", R.drawable.abacaxi, 0),
+        Fruta("Limao", "Fruta Citrica Azeda","", R.drawable.limao, 1),
+        Fruta("Laranja", "Fruta Citrica Adocicada", "", R.drawable.laranja, 2)
     )
 
 
@@ -92,7 +96,11 @@ class MainActivity: AppCompatActivity() {
         val positionF = listFrutas.indexOf(vFruta)
         listFrutas.remove(vFruta)
         mFrutasAdapter.notifyItemRemoved(positionF)
-        if (listFrutas.isEmpty()){
+        verificaListaVazia()
+    }
+
+    private fun verificaListaVazia() {
+        if (listFrutas.isEmpty()) {
             binding.recyclerView.visibility = INVISIBLE
             binding.cardView.visibility = VISIBLE
         }
@@ -127,19 +135,49 @@ class MainActivity: AppCompatActivity() {
 
     private fun setupRecylerview() {
         binding.recyclerView.adapter = mFrutasAdapter
-        val layoutManager = GridLayoutManager(this, 1)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
-            override fun getSpanSize(position: Int): Int {
-                return  1
-            }
-        }
+        val layoutManager = LinearLayoutManager(this)
+
         binding.recyclerView.layoutManager = layoutManager
 
-        val itemTouchHelper = ItemTouchHelper(NoteItemTouchHelperCallBack(mFrutasAdapter))
+        val itemTouchHelper = ItemTouchHelper(NoteItemTouchHelperCallBack(this,
+        object : FrutaRecyclerViewCallback{
+            override fun onMoved(initPosition: Int, targetPosition: Int) {
+                val frutaOrigem = listFrutas[initPosition]
+                val frutaDestino = listFrutas[targetPosition]
+
+                frutaOrigem.ordem = targetPosition + 1
+                frutaDestino.ordem = initPosition + 1
+
+                Collections.swap(listFrutas, initPosition, targetPosition)
+                mFrutasAdapter.notifyItemMoved(initPosition, targetPosition)
+            }
+
+            override fun onSwipe(position: Int, view: RecyclerView.ViewHolder) {
+                    dialogApagarFruta(position)
+                  //mFrutasAdapter.remove(position)
+                   // mFrutasAdapter.notifyDataSetChanged()
+
+              //}
+            }
+        }))
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
-
+    private fun dialogApagarFruta(position: Int): Boolean {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.remover_fruta_alert)
+        builder.setMessage(R.string.remover_fruta_msg)
+        builder.setPositiveButton(R.string.yes) { dialog, which ->
+            mFrutasAdapter.remove(position)
+            verificaListaVazia()
+        }
+        builder.setNegativeButton(R.string.no) { dialog, which ->
+            mFrutasAdapter.notifyDataSetChanged()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+        return false
+    }
 
 
 }

@@ -28,8 +28,9 @@ class DetailFruitActivity : AppCompatActivity() {
         intent.getParcelableExtra<Fruta>(MAIN_FRUTA_DETAIL)?.let{
             binding.nameFruit.text = it.nome
             binding.descFruit.text = it.descricao
-            if (it.imagemFruta.length < 2 ) {
+            if (it.ImagDraw > 0) {
                 // binding.DetailFruitImageView.setImageDrawable(getDrawable(R.array.frutas[it.nome]))
+                Picasso.get().load(it.ImagDraw).into(binding.DetailFruitImageView)
             }else {
                 Picasso.get().load(it.imagemFruta).into(binding.DetailFruitImageView)
             }

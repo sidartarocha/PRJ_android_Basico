@@ -14,7 +14,8 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         tools:layout_editor_absoluteX="-28dp"
-        tools:layout_editor_absoluteY="-230dp" />
+        tools:layout_editor_absoluteY="-230dp"
+        tools:listitem="@layout/item_fruta"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"

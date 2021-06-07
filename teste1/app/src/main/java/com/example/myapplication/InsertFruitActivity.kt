@@ -3,6 +3,9 @@ package com.example.myapplication
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,8 +29,21 @@ class InsertFruitActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInsertFruitBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        insertFruta()
+        supportActionBar?.setTitle(R.string.add_fruta)
+       // insertFruta()
         abrirImagem()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_insert_fruit_layout, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.addfruitmenu){
+            insertFruta()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun abrirImagem(){
@@ -51,13 +67,14 @@ class InsertFruitActivity: AppCompatActivity() {
     }
 
     private fun insertFruta(){
-        binding.bntCadastra.setOnClickListener{
+        //binding.bntCadastra.setOnClickListener{
+
             val name = binding.editTextNomeFruta.text.toString()
             val descf = binding.editTextDescFruta.text.toString()
             val imgf = imageURL2
             if (isValid(name) and isValid(descf) and imageURL2.isNotEmpty()){
                 val returnIntent = Intent(this, MainActivity::class.java)
-                val futra_add = Fruta(name, descf, imgf , 0)
+                val futra_add = Fruta(name, descf, imgf , 0, 5)
                 if (validaFrutaCadastrada(futra_add) == TRUE){
                     returnIntent.putExtra(MAIN_FRUTA_ADD, futra_add)
                     returnIntent.putExtra(FRUIT_ACTIVITY_ACTION, "insert")
@@ -69,10 +86,10 @@ class InsertFruitActivity: AppCompatActivity() {
 
 
             }else{
-                Toast.makeText(this, "Todos os item são obrigatorios para preenchimento!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.msg_itens_obrigatorios, Toast.LENGTH_SHORT).show()
             }
 
-        }
+        //}
     }
 
     private fun validaFrutaCadastrada(futraAdd: Fruta): Boolean {
